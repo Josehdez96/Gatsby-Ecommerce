@@ -1,19 +1,26 @@
+/* eslint-disable no-undef */
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
+// La gran mayoria de las veces los datos del servidor de GraphiQL vienen de este archivo
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Ecommerce`,
+    description: `My e-commerce site with Gatsby`,
+    author: `Jose Hernandez`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-source-filesystem`, //Plugin, nuestros archivos
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`,
+        // eslint-disable-next-line no-undef
+        path: `${__dirname}/src/images`, //El filesystem de GraphQL toma mi carpeta imagenes
       },
     },
-    `gatsby-transformer-sharp`,
+    `gatsby-transformer-sharp`, //Toma las imagenes y las convierte en diferente tipo de imagen (svg por ejemplo)
     `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
@@ -27,8 +34,20 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-typography`,
+      options: {
+        pathToConfigModule: `src/utils/typography.js`,
+      },
+    },
+    `gatsby-plugin-stripe`, //Pone el API de Stripe disponible en el navegador
+    {
+      resolve: `gatsby-source-stripe`, //La manera en que yo obtengo mis productos en mi tienda de Stripe
+      options: {
+        objects: ["Sku", "Product"],
+        secretKey: process.env.STRIPE_SK,
+        downloadFiles: true,
+      },
+    },
   ],
 }
