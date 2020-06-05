@@ -11,14 +11,14 @@ import {
 } from "../styles/components"
 import { SEO, Stars } from "./"
 
-export default function productDetail({ name, metadata }) {
+export default function productDetail({ id, name, metadata }) {
   const formatedPrice = priceFormat(metadata.price)
   const [size, setSize] = useState(2)
   const [qty, setQty] = useState(1)
   const { addToCart } = useContext(CartContext)
 
   const handleSubmit = () => {
-    addToCart({ name, metadata, quantity: qty })
+    addToCart({ id, name, metadata, quantity: qty })
   }
 
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "gatsby"
 import { Button, StyledCart } from "../styles/components"
@@ -7,12 +8,13 @@ import { CartContext } from "../context"
 export default function Cart() {
   const { cart } = useContext(CartContext)
   const [total, setTotal] = useState(0)
+  const [stripe, setStripe] = useState()
 
   const getTotal = () => {
     setTotal(
       cart.reduce(
-        (accumulator, current) =>
-          accumulator + current.metadata.price * current.quantity,
+        (accumulator, currentValue) =>
+          accumulator + currentValue.metadata.price * currentValue.quantity,
         0
       )
     )
@@ -20,8 +22,24 @@ export default function Cart() {
 
   //useEffect es una nueva manera de manejar el estado de los componentes, reemplazando asi a componentDidMount y demás
   useEffect(() => {
+    setStripe(
+      //Configuración de Stripe
+      window.Stripe(process.env.STRIPE_PK, { betas: ["checkout_beta_4"] })
+    )
     getTotal()
   }, [])
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const { error } = await stripe.redirectToCheckout({
+      items: cart.map(({ product, quantity }) => ({ product, quantity })),
+      successUrl: process.env.SUCCESS_REDIRECT,
+      cancelUrl: process.env.CANCEL_REDIRECT,
+    })
+    if (error) {
+      throw error
+    }
+  }
 
   return (
     <StyledCart>
@@ -55,7 +73,9 @@ export default function Cart() {
           <Link to="/">
             <Button type="outline">Volver</Button>
           </Link>
-          <Button>Comprar</Button>
+          <Button onClick={handleSubmit} disabled={cart.length === 0}>
+            Comprar
+          </Button>
         </div>
       </nav>
     </StyledCart>
