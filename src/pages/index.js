@@ -34,8 +34,8 @@ export const query = graphql`
 `
 
 const IndexPage = ({ data }) => {
-  //console.log(data.allSite.edges[0].node.siteMetadata.description) //Util para llegar al dato que necesitamos
-  console.log(data.allStripeProduct.edges)
+  //console.log(data.allSite.edges[0].node.siteMetadata.description)
+  //console.log(data.allStripeProduct.edges)
   return (
     <>
       <SEO title="Home" />

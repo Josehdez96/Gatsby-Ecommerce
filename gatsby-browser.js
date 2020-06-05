@@ -1,11 +1,4 @@
 /* eslint-disable no-undef */
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
-
-// You can delete this file if you're not using it
 //Este codigo corre en NodeJS
 
 //Utilizamos una pieza de codigo de la API de Gatsby
