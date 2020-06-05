@@ -7,12 +7,13 @@
 const React = require("react") //Permite usar JSX
 const Layout = require("./src/components/layout").default //Traeme el componente por defecto
 const { GlobalStyles } = require("./src/styles")
+const { CartProvider } = require("./src/context") //Damos acceso al contexto global del carrito de compras
 
 //Todos los export estan en la documentacion de Gatsby
 //||element|| son cada una de todas mis paginas
 exports.wrapRootElement = ({ element }) => (
-  <>
+  <CartProvider>
     <GlobalStyles />
     <Layout>{element}</Layout>
-  </>
+  </CartProvider>
 )
